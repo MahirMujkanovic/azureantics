@@ -1,8 +1,8 @@
 ﻿#######################################
 #
-# Mahir Mujkanovic @ networkantics.com - April 2023 v: 1.2
+# Mahir Mujkanovic @ networkantics.com - May 2023 v: 1.3
 # 
-# The Script is designed to be run as a scheduled task activated by the LogOff event EventID=4647, Though it can be run as time scheduled also.
+# The Script is designed to be run as a scheduled task activated on StartUp and by the LogOff event EventID=4647, Though it can be run as time scheduled also.
 # The Script will query user sessions and if no active sessions are present
 # the Script will set the flag "userConnectionsActive" (in registry) to "0" and sleep for 15 minutes 
 # the Script will query user sessions again, if there are still no active users and the userConnectionsActive flag is still "0" the script will Deallocate the Azure VM
