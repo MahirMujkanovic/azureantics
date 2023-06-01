@@ -1,6 +1,6 @@
 ####
 #
-# Mahir Mujkanovic @ Networkantics v: 0.1 - Feb 2023 
+# Mahir Mujkanovic @ Networkantics.com v: 1.0 - May 2023 
 #
 ####
 
@@ -24,8 +24,8 @@ $triggers = @()
 
 # create TaskEventTrigger
 $CIMTriggerClass = Get-CimClass -ClassName MSFT_TaskEventTrigger -Namespace Root/Microsoft/Windows/TaskScheduler:MSFT_TaskEventTrigger
-$trigger = New-CimInstance -CimClass $CIMTriggerClass -ClientOnly
-$trigger.Subscription = 
+$triggerOnEvent = New-CimInstance -CimClass $CIMTriggerClass -ClientOnly
+$triggerOnEvent.Subscription = 
 @"
 <QueryList><Query Id="0" Path="Security"><Select Path="Security">*[System[Provider[@Name='Microsoft-Windows-Security-Auditing'] and (EventID=4647)]]</Select></Query></QueryList>
 "@
@@ -35,8 +35,13 @@ $TaskAction = New-ScheduledTaskAction `
                     -Execute 'PowerShell.exe' `
                     -Argument "-NoLogo -NonInteractive -NoProfile -ExecutionPolicy Bypass -File $targetScriptFilePath"
 
-$trigger.Enabled = $True 
-$triggers += $trigger
+$triggerOnEvent.Enabled = $True 
+
+$triggers += $triggerOnEvent
+
+$triggerOnStartup = New-JobTrigger -AtStartup -RandomDelay 00:03:00
+$triggers += $triggerOnStartup
+
 
 
 $TaskPrinciple = New-ScheduledTaskPrincipal `
@@ -48,5 +53,5 @@ $User='Nt Authority\System'
 $Action=New-ScheduledTaskAction -Execute "Powershell.exe" -Argument "-NoLogo -NonInteractive -NoProfile -ExecutionPolicy Bypass -File $targetScriptFilePath"
 Register-ScheduledTask -TaskName $taskName -TaskPath $newTaskPath -Trigger $triggers -User $User -Action $Action -RunLevel Highest -Force `
                         -Settings $newTaskSettings `
-                        -Description "This task wil fire on Event ID: 4647 and execute the script C:\Program Files\NetworkAnticsTools\AzureAVD-TurnOffVM-IfNoActiveSessions.ps1" 
+                        -Description "This task wil fire on Startup and on Event ID: 4647 and execute the script C:\Program Files\NetworkAnticsTools\AzureAVD-TurnOffVM-IfNoActiveSessions.ps1" 
 
