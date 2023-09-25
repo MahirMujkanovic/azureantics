@@ -167,7 +167,7 @@ if(!(Test-Path $registryPath))
 $quserResult = GetRemoteSessions
 
 # if no active sessions
-if($quserResult.Count -lt 2)
+if($quserResult.Count -lt 1)
 {
 
     # check if the userConnectionsActive property is present if not create it with value of 0 or if existent set it to the value of 0 
@@ -205,7 +205,7 @@ Start-Sleep -Seconds $waitTime
 $quserResult = GetRemoteSessions
 
 #if no active sessions
-if($quserResult.Count -lt 2)
+if($quserResult.Count -lt 1)
 {
     if(!(Get-ItemPropertyValue -Path $registryPath -Name $registryUserConnectionsActiveProperty -ErrorAction Stop))
     {
