@@ -47,7 +47,7 @@ $triggers += $triggerOnStartup
 $TaskPrinciple = New-ScheduledTaskPrincipal `
                     -UserId "NT AUTHORITY\SYSTEM" -LogonType ServiceAccount -RunLevel Highest
 
-$newTaskSettings=New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -Compatibility Win8 -MultipleInstances IgnoreNew -WakeToRun -ExecutionTimeLimit (New-TimeSpan -hours 1)
+$newTaskSettings=New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -Compatibility Win8 -MultipleInstances StopExisting -WakeToRun -ExecutionTimeLimit (New-TimeSpan -hours 1)
 # create task
 $User='Nt Authority\System'
 $Action=New-ScheduledTaskAction -Execute "Powershell.exe" -Argument "-NoLogo -NonInteractive -NoProfile -ExecutionPolicy Bypass -File $targetScriptFilePath"
